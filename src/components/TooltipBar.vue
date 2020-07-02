@@ -1,14 +1,15 @@
 <template>
-    <div class="bar" >
+    <div class="bar " :class="{'hoverable': arrow}" @click="showDetails" >
         <div class="text-content" :class="{'text-bold' : bold}" >
             <div>
+                <i v-if="arrow" class="fa fa-angle-down" style="margin-right: 5px; color: white; opacity: 50%;"></i>
                 <slot></slot>
             </div>
             <div>
-                {{parseInt(percentage).toFixed(2)}} {{concept}}
+                {{parseFloat(info.average).toFixed(2)}} {{concept}}
             </div>
         </div>
-        <div class="bar-content " :class="background_color" :style="{'width' : percentage + '%'}"></div>
+        <div class="bar-content " :class="background_color" :style="{'width' : info.average + '%'}"></div>
     </div>
 </template>
 
@@ -17,8 +18,8 @@
        name : 'tooltip-bar',
 
        props : {
-           percentage : {
-               default : 0
+           info : {
+               type : Object
            },
            concept : {
                type : String,
@@ -28,27 +29,34 @@
            bold : {
                type : Boolean,
                default : false
+           },
+           arrow : {
+            type : Boolean,
+           default : false
            }
+
+
        },
 
        methods : {
-           action(){
-               console.log('Taking action directly')
+           showDetails(){
+               if(this.arrow){
+                    console.log('Show details on element')
+                    this.$emit('show-details')
+               }
            }
        },
 
        created(){
-           console.log('Per : ' + this.percentage)
-           console.log('Bold : ' + this.bold)
        },
 
        computed : {
            background_color(){
-               if(this.percentage >= 50){
+               if(this.info.average >= 50){
                    return 'green'
                }
 
-               if(this.percentage >= 50/2 && this.percentage<50){
+               if(this.info.average >= 50/2 && this.info.average<50){
                    return 'yellow'
                }
                return 'red'
@@ -59,7 +67,7 @@
 
 <style scoped>
 .bar{
-    background-color: gray;
+    background-color: rgb(100, 100, 100);
     border-radius: 5px;
     color: white;
     font-size: 13px;
@@ -72,6 +80,10 @@
     align-items: center;
     cursor: context-menu;
     margin : 5px;
+}
+
+.bar.hoverable:hover{
+    opacity: 85%;
 }
 
 
@@ -110,6 +122,10 @@
 
 .text-bold>div{
     font-weight : bold;
+}
+
+.fa {
+    margin-right: 10rem;
 }
 
 </style>

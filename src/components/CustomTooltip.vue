@@ -9,11 +9,14 @@
             <slot></slot>
         </div>
 
-        <div v-for="item in averages" :key="item.item">
-            <tooltip-bar :percentage="item.average">{{item.item}}</tooltip-bar>
-        </div>
+        <!-- <div v-for="item in averages" :key="item.item">
+            <tooltip-bar :info="item" arrow>{{item.item}}</tooltip-bar>
+        </div> -->
+        <tree-item v-for="item in averages" :key="item.item" :item="item">
 
-        <tooltip-bar :percentage="average" bold style="margin-top: 20px;">Average</tooltip-bar>
+        </tree-item>
+
+        <tooltip-bar :info="{'average' : average}" bold style="margin-top: 20px;">Average</tooltip-bar>
 
 
     </div>
@@ -21,11 +24,12 @@
 
 <script>
 import TooltipBar from './TooltipBar'
+import TreeItem from './TreeItem'
 
     export default {
         name : 'custom-tooltip',
         components : {
-            TooltipBar
+            TooltipBar, TreeItem
         },
 
         data(){
@@ -37,6 +41,22 @@ import TooltipBar from './TooltipBar'
                 averages : [],
                 average : 0
 
+            }
+        },
+
+        computed : {
+
+        },
+
+        watch : {
+            opacity(){
+                if(this.opacity != 0){
+                    //bringing element to the front of the screen
+                    this.$el.style.zIndex = 1000
+                }else{
+                    //sending element to the back of the screen
+                    this.$el.style.zIndex = -1000
+                }
             }
         },
 
@@ -55,7 +75,7 @@ import TooltipBar from './TooltipBar'
 
 <style scoped>
 .custom-tooltip{
-    background-color: rgb(24, 24, 24);
+    background-color: rgb(26, 26, 26);
     color : white!important;
     position: absolute;
     font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
@@ -75,4 +95,5 @@ import TooltipBar from './TooltipBar'
     margin-bottom: 12px;
 
 }
+
 </style>
