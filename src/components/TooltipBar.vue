@@ -5,7 +5,7 @@
                 <slot></slot>
             </div>
             <div>
-                {{percentage.toFixed(2)}} {{concept}}
+                {{parseInt(percentage).toFixed(2)}} {{concept}}
             </div>
         </div>
         <div class="bar-content " :class="background_color" :style="{'width' : percentage + '%'}"></div>
@@ -18,7 +18,6 @@
 
        props : {
            percentage : {
-               type : Number,
                default : 0
            },
            concept : {

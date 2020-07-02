@@ -2,13 +2,20 @@
     <div class="custom-tooltip"
     :style="{'top' : top, 'left' : left, 'opacity' :  opacity}">
         <div class="custom-tooltip-header">
-            January autorating
+            {{title}}
         </div>
-        <tooltip-bar :percentage="44" >Ignacio Ambia</tooltip-bar>
-        <tooltip-bar :percentage="70">Jorge Rangel</tooltip-bar>
-        <tooltip-bar :percentage="22">Susana Torres</tooltip-bar>
 
-        <tooltip-bar :percentage="35" bold style="margin-top: 20px;">Average</tooltip-bar>
+        <div>
+            <slot></slot>
+        </div>
+
+        <div v-for="item in averages" :key="item.item">
+            <tooltip-bar :percentage="item.average">{{item.item}}</tooltip-bar>
+        </div>
+
+        <tooltip-bar :percentage="average" bold style="margin-top: 20px;">Average</tooltip-bar>
+
+
     </div>
 </template>
 
@@ -25,8 +32,23 @@ import TooltipBar from './TooltipBar'
             return {
                 top : '0px',
                 left : '0px',
-                opacity : 0
+                opacity : 0,
+                title : '',
+                averages : [],
+                average : 0
+
             }
+        },
+
+        mounted(){
+            
+              this.$el.addEventListener('mouseout',()=>{
+                  this.opacity = 0
+              })
+
+                this.$el.addEventListener('mouseover',()=>{
+                  this.opacity = 1
+              })
         }
     }
 </script>
