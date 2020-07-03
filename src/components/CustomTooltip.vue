@@ -86,6 +86,7 @@ import TreeItem from './TreeItem'
     padding: 5px;
     margin: 5px;
     transition : .2s;
+    z-index: -1000;
 }
 
 .custom-tooltip-header{

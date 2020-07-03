@@ -1,5 +1,6 @@
 <template>
-  <div class="card">
+
+<div class="card">
     <div>
         Content goes here
     </div>
@@ -7,14 +8,25 @@
         details  <i class=" ml-2 fas fa-plus-square"></i>
     </div>
 
+    <div class="card-extra-section" :class="{'collapsed': !detailsOpen}">
+        <p>Extra content goes here</p>
+        <p>Extra content goes here</p>
+        <p>Extra content goes here</p>
+        <p>Extra content goes here</p>
+        <p>Extra content goes here</p>
+        <p>Extra content goes here</p>
+        <p>Extra content goes here</p>
+        <p>Extra content goes here</p>
+        <p>Extra content goes here</p>
+        <p>Extra content goes here</p>
+        <p>Extra content goes here</p>
+        <p>Extra content goes here</p>
+        <p>Extra content goes here</p>
+        
+    </div>  
 
-        <div v-show="detailsOpen">
-            Extra content goes here
-        </div> 
-
-   
-
-  </div>
+</div>
+        
 </template>
 
 <script>
@@ -29,6 +41,11 @@ export default {
         toggle(){
             this.detailsOpen = !this.detailsOpen
         }
+    }
+
+    ,
+
+    mounted(){
     }
 }
 </script>
@@ -72,15 +89,16 @@ export default {
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
-.smooth-enter-active, .smooth-leave-active {
-  transition: height .5s;
-  /* overflow: hidden; */
-}
-.smooth-enter, .smooth-leave-to {
-  height: 100px;
+.card-extra-section{
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+    height : auto;
+    max-height: 1000px;
+
 }
 
-.display-none{
-    display : none
+.card-extra-section.collapsed{
+    max-height: 0;
 }
+
 </style>
