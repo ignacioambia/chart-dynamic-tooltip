@@ -5,14 +5,21 @@
   <custom-tooltip ref="custom_tooltip">
   </custom-tooltip>
 
-  <tree-item v-for="user in users" :key="user.name" :item="user">
 
-  </tree-item>
+  <tree-test v-for="item in list" :key="item.item" :info="item">
 
-  <card></card>
+  </tree-test>
 
-  <button @click="addChildren">
-    hola
+<hr>
+
+
+
+  <div v-for="(elem,index) in list" :key="index">
+    {{elem.item}}
+  </div>
+
+  <button @click="addChildren()">
+    Add user
   </button>
 
 
@@ -22,48 +29,104 @@
 <script>
 import Chart from 'chart.js'
 import CustomTooltip from './components/CustomTooltip'
-import TreeItem from './components/TreeItem'
-import Card from './components/Card'
-
+import TreeTest from './components/TreeTest'
 
 export default {
   name : 'app',
   components : {
-    CustomTooltip, TreeItem, Card
+    CustomTooltip, TreeTest
   },
 
   data(){
     return {
 
+      tooltipsToKeepOpen : [],
 
-      users : [
-      {
-          name : 'Susana',
-          value :  22,
+      list : [
+        {
+          item : 'Jorge',
+          average : '12',
           children : [
             {
-              name : 'Cholo x',
-              value : 12,
-              children : [
-                {
-                  name : 'Ignacio Ambia',
-                  value : 15
-                }
-              ]
+              item : 'Alan',
+              average : '15',
+              children : []
             },
             {
-              name : 'Cholo y',
-              value : 80
+              item : 'Ariel',
+              average : '18',
+              children : [
+                { 
+                  item : 'Susana',
+                  average : '100',
+                },
+                { 
+                  item : 'Antonio',
+                  average : '95',
+                },
+              ]
             }
           ]
         },
         {
-          name : 'Ignacio',
-          value : 45
+          item : 'Viridiana',
+          average : '13',
+          children : [
+            {
+              item : 'Angelica',
+              average : '33'
+            },
+            {
+              item : 'Naomi',
+              average : '22',
+              children : [
+                { 
+                  item : 'Fernanda',
+                  average : '65',
+                },
+                { 
+                  item : 'Sofia',
+                  average : '48',
+                },
+              ]
+            }
+          ]
+        },
+      ],
+
+      customKey : '',
+      keyCount : 0,
+
+      prop : 'queso',
+
+      users : [
+      {
+          item : 'Susana',
+          average :  22,
+          children : [
+            {
+              item : 'Cholo x',
+              average : 12,
+              children : [
+                {
+                  item : 'Ignacio Ambia',
+                  average : 15
+                }
+              ]
+            },
+            {
+              item : 'Cholo y',
+              average : 80
+            }
+          ]
         },
         {
-          name : 'Jorge',
-          value : 70
+          item : 'Ignacio',
+          average : 45
+        },
+        {
+          item : 'Jorge',
+          average : 70
         },
 
       ],
@@ -98,6 +161,25 @@ export default {
   },
 
   methods : {
+
+
+    forceRender(el){
+      this.customKey =  el.item + this.keyCount
+    },
+
+    addChildren(){
+
+      if(!this.users[1].children){
+        this.users[1].children = [{item : 'Paco', average : 85}]
+        this.forceRender(this.users[1])
+
+      }else{
+        this.users[1].children.push({item : 'Paco', average : 85})
+      }
+
+      this.list.push('platano')
+    },
+
     updateChart(){
       this.chart = new Chart(document.getElementById('chart'),{
       type : 'line',
@@ -108,16 +190,28 @@ export default {
             label : 'product',
              data  : this.values
           }
-        ]
+        ],
 
         },
 
-        options :{
-          tooltips : {
-            enabled : false,
-            custom : tooltipModel => {
 
-              
+
+
+        options :{
+
+          onClick : (evt,x)=>{ 
+            console.log('Chart is clickted')
+            console.log(evt)
+            console.log(x)
+        },
+
+          tooltips : {
+
+            enabled : false,
+            custom : (tooltipModel) => {
+
+              console.log(tooltipModel)
+
 
               let customTooltip = this.$refs['custom_tooltip']
 
@@ -125,6 +219,7 @@ export default {
                 customTooltip.opacity = 0
                 return;
               }
+
               customTooltip.title = tooltipModel.title[0]
               let index = tooltipModel.dataPoints[0].index
               customTooltip.averages = this.chart.data.datasets[0].data[index].details
@@ -152,18 +247,15 @@ export default {
             }
           }
         }
+
       })
     },
 
     action(){
-        console.log('taking action')
+        this.prop = 'hola'
     },
 
-    addChildren(){
-      // this.users[2].children.push({ name : 'Paco', value : 85}) 
-      this.users[1].children = [{name : 'Paco', value : 85}]
-      console.log('chollo added')
-    }
+
   },
 
   mounted(){

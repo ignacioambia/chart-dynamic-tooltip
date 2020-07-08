@@ -1,25 +1,23 @@
 <template>
+  <div>
+      <div @click="toggle()">
+          <tooltip-bar
+          :arrow="isFolder"
+          :info="{'average' : item.average}"> 
+              {{item.item}} 
+          </tooltip-bar>
+      </div>
+      <div v-show="isOpen" style="margin-left : 10px; margin-bottom : 15px">
+          <div v-if="isFolder" >
+              <tree-item v-for="(item, index) in item.children" :key="index" :item="item">
 
-    <div>
-        <div>
-            <!-- <user-card 
-                @toggle-supervisor="toggle" 
-                :user_info="item" 
-                :key="item.id_user"
-                @child-is-shown="showSupervisor"></user-card> -->
-                <tooltip-bar  :arrow="item.children ? true : false"
-                    :info="{'average' : item.average}"
-                    @show-details = "toggle()"
-                    >{{item.item}}</tooltip-bar>
-        </div>
-        <div v-show="isOpen" v-if="isFolder" class="ml-3" style="margin-left : 25px; margin-bottom : 12px;">
-            <tree-item 
-            v-for="(child, index) in item.children"
-            :key="index"
-            :item="child"
-            ></tree-item>
-        </div>
-    </div>
+              </tree-item>
+          </div>
+
+      </div>
+      
+  </div>
+
 </template>
 
 
@@ -44,10 +42,10 @@ export default {
     },
 
     computed: {
-      isFolder() {
-        return this.item.children &&
-          this.item.children.length
-      }
+        isFolder(){
+            let result = (this.item.children && this.item.children.length) ? true : false
+            return result
+        }
     },
 
     methods: {
