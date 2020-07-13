@@ -39,13 +39,28 @@ import TreeItem from './TreeItem'
                 opacity : 0,
                 title : '',
                 averages : [],
-                average : 0
+                average : 0,
+                tooltipsToKeepOpen : []
 
             }
         },
 
         computed : {
 
+        },
+
+        methods : {
+            keepTooltipOpen(index){
+                if(!this.tooltipsToKeepOpen.includes(index)){
+                    console.log('Adding tooltip to those that we must keep open')
+                    this.tooltipsToKeepOpen.push(index)
+                }else{
+                    console.log('Tooltip already added to list')
+                }
+
+                console.log(this.tooltipsToKeepOpen)
+
+            }
         },
 
         watch : {

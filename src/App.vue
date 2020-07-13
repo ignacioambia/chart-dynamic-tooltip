@@ -1,40 +1,29 @@
 <template>
 <div>
-  
-   <canvas id="chart"></canvas>
-  <custom-tooltip ref="custom_tooltip">
-  </custom-tooltip>
-
-
-  <tree-test v-for="item in list" :key="item.item" :info="item">
-
-  </tree-test>
-
-<hr>
-
-
-
-  <div v-for="(elem,index) in list" :key="index">
-    {{elem.item}}
-  </div>
-
-  <button @click="addChildren()">
-    Add user
-  </button>
-
-
+    <my-chart ref="first-tooltip" name="first-chart" :info="info" ></my-chart>
 </div>
 </template>
 
 <script>
-import Chart from 'chart.js'
-import CustomTooltip from './components/CustomTooltip'
-import TreeTest from './components/TreeTest'
+
+import MyChart from './components/MyChart'
+
+// import Chart from 'chart.js'
+// import CustomTooltip from './components/CustomTooltip.vue'
+// import Vue from 'vue'
+
+
+
+// var tooltip_class = Vue.extend(CustomTooltip)
+// var inst = new tooltip_class()
+
+
+// console.log(inst)
 
 export default {
   name : 'app',
   components : {
-    CustomTooltip, TreeTest
+    MyChart
   },
 
   data(){
@@ -42,94 +31,60 @@ export default {
 
       tooltipsToKeepOpen : [],
 
-      list : [
-        {
-          item : 'Jorge',
-          average : '12',
-          children : [
-            {
-              item : 'Alan',
-              average : '15',
-              children : []
-            },
-            {
-              item : 'Ariel',
-              average : '18',
-              children : [
-                { 
-                  item : 'Susana',
-                  average : '100',
-                },
-                { 
-                  item : 'Antonio',
-                  average : '95',
-                },
-              ]
-            }
-          ]
-        },
-        {
-          item : 'Viridiana',
-          average : '13',
-          children : [
-            {
-              item : 'Angelica',
-              average : '33'
-            },
-            {
-              item : 'Naomi',
-              average : '22',
-              children : [
-                { 
-                  item : 'Fernanda',
-                  average : '65',
-                },
-                { 
-                  item : 'Sofia',
-                  average : '48',
-                },
-              ]
-            }
-          ]
-        },
-      ],
+      // list : [
+      //   {
+      //     item : 'Jorge',
+      //     average : '12',
+      //     children : [
+      //       {
+      //         item : 'Alan',
+      //         average : '15',
+      //         children : []
+      //       },
+      //       {
+      //         item : 'Ariel',
+      //         average : '18',
+      //         children : [
+      //           { 
+      //             item : 'Susana',
+      //             average : '100',
+      //           },
+      //           { 
+      //             item : 'Antonio',
+      //             average : '95',
+      //           },
+      //         ]
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     item : 'Viridiana',
+      //     average : '13',
+      //     children : [
+      //       {
+      //         item : 'Angelica',
+      //         average : '33'
+      //       },
+      //       {
+      //         item : 'Naomi',
+      //         average : '22',
+      //         children : [
+      //           { 
+      //             item : 'Fernanda',
+      //             average : '65',
+      //           },
+      //           { 
+      //             item : 'Sofia',
+      //             average : '48',
+      //           },
+      //         ]
+      //       }
+      //     ]
+      //   },
+      // ],
 
       customKey : '',
       keyCount : 0,
-
-      prop : 'queso',
-
-      users : [
-      {
-          item : 'Susana',
-          average :  22,
-          children : [
-            {
-              item : 'Cholo x',
-              average : 12,
-              children : [
-                {
-                  item : 'Ignacio Ambia',
-                  average : 15
-                }
-              ]
-            },
-            {
-              item : 'Cholo y',
-              average : 80
-            }
-          ]
-        },
-        {
-          item : 'Ignacio',
-          average : 45
-        },
-        {
-          item : 'Jorge',
-          average : 70
-        },
-
-      ],
 
        info : {"Paul Molive 2020":[{"item":"Petey Cruiser.","average":"0.0","month":"Paul Molive","month_number":"5","year":"2020","month_year":"Paul Molive 2020",
         children : [
@@ -180,76 +135,76 @@ export default {
       this.list.push('platano')
     },
 
-    updateChart(){
-      this.chart = new Chart(document.getElementById('chart'),{
-      type : 'line',
-      data : {
-        labels : this.labels,
-        datasets : [
-          {
-            label : 'product',
-             data  : this.values
-          }
-        ],
+    // updateChart(){
+    //   this.chart = new Chart(document.getElementById('chart'),{
+    //   type : 'line',
+    //   data : {
+    //     labels : this.labels,
+    //     datasets : [
+    //       {
+    //         label : 'product',
+    //          data  : this.values
+    //       }
+    //     ],
 
-        },
-
-
-
-
-        options :{
-
-          onClick : (evt,x)=>{ 
-            console.log('Chart is clickted')
-            console.log(evt)
-            console.log(x)
-        },
-
-          tooltips : {
-
-            enabled : false,
-            custom : (tooltipModel) => {
-
-              console.log(tooltipModel)
-
-
-              let customTooltip = this.$refs['custom_tooltip']
-
-              if(tooltipModel.opacity == 0){
-                customTooltip.opacity = 0
-                return;
-              }
-
-              customTooltip.title = tooltipModel.title[0]
-              let index = tooltipModel.dataPoints[0].index
-              customTooltip.averages = this.chart.data.datasets[0].data[index].details
-              customTooltip.average = this.chart.data.datasets[0].data[index].y
+    //     },
 
 
 
-              customTooltip.opacity = 1
 
-              let chartPosition = this.chart.canvas.getBoundingClientRect()
-              let tooltipPosition = customTooltip.$el.getBoundingClientRect()
+    //     options :{
 
-              //assigning top position of tooltip
-              customTooltip.top =  chartPosition.top + window.pageYOffset + tooltipModel.caretY + 'px'
+    //       onClick : (evt,chartElement)=>{ 
+    //         console.log(chartElement[0]._index)
+    //       },
 
-              //assigning left position of tooltip
-              let finalPosition = chartPosition.left + window.pageXOffset + tooltipModel.caretX
-              if(window.innerWidth < finalPosition + tooltipPosition.width ){
-                customTooltip.left = finalPosition - tooltipPosition.width - 10 + 'px'
-              }else{
-                customTooltip.left = finalPosition +'px'
-              }
+    //       tooltips : {
+
+    //         enabled : false,
+    //         custom : (tooltipModel) => {
+
+
+
+    //           let customTooltip = this.$refs['custom_tooltip']
+
+    //           if(tooltipModel.opacity == 0){
+    //             customTooltip.opacity = 0
+    //             return;
+    //           }
+
+    //           console.log(tooltipModel.dataPoints[0].index)
+
+
+    //           customTooltip.title = tooltipModel.title[0]
+    //           let index = tooltipModel.dataPoints[0].index
+    //           customTooltip.averages = this.chart.data.datasets[0].data[index].details
+    //           customTooltip.average = this.chart.data.datasets[0].data[index].y
+
+
+
+    //           customTooltip.opacity = 1
+
+    //           let chartPosition = this.chart.canvas.getBoundingClientRect()
+    //           let tooltipPosition = customTooltip.$el.getBoundingClientRect()
+
+    //           //assigning top position of tooltip
+    //           customTooltip.top =  chartPosition.top + window.pageYOffset + tooltipModel.caretY + 'px'
+
+    //           //assigning left position of tooltip
+    //           let finalPosition = chartPosition.left + window.pageXOffset + tooltipModel.caretX
+    //           if(window.innerWidth < finalPosition + tooltipPosition.width ){
+    //             customTooltip.left = finalPosition - tooltipPosition.width - 10 + 'px'
+    //           }else{
+    //             customTooltip.left = finalPosition +'px'
+    //           }
               
 
-            }
-          }
-        }
+    //         }
+    //       }
+    //     }
 
-      })
-    },
+    //   })
+    // },
 
     action(){
         this.prop = 'hola'
@@ -259,9 +214,9 @@ export default {
   },
 
   mounted(){
-    this.updateChart()
+    // this.updateChart()
 
-    console.log(this.$refs['custom_tooltip'])
+    // console.log(this.$refs['custom_tooltip'])
   }
   
 }
