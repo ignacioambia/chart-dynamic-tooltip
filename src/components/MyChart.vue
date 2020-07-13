@@ -115,14 +115,19 @@ export default {
                 custom : tooltipModel => {
 
 
-                if(tooltipModel.opacity == 0){
+                if(tooltipModel.opacity == 0 ){
                     this.tooltip.opacity = 0
                     return;
                 }
 
                 let index = tooltipModel.dataPoints[0].index
 
-                
+                //as there is already an open tooltip showing this info, we shouldn't
+                //show another one with the same info
+                if( this.tooltip.isKeptOpen(index)){
+                    return
+                }
+
                 this.tooltip.title = tooltipModel.title[0]
                 
                 this.tooltip.averages = this.chart.data.datasets[0].data[index].details
@@ -155,68 +160,6 @@ export default {
 
         })
 
-        // this.chart = new Chart(document.getElementById(this.id_chart),{
-        // type : 'line',
-        // data : {
-        //     labels : this.labels,
-        //     datasets : [
-        //     {
-        //         label : 'product',
-        //         data  : this.values
-        //     }
-        //     ]
-
-        //     },
-
-        //     // options :{
-
-            // // onClick : (evt,chartElement) => {
-            // //     if(chartElement.length > 0){
-            // //     console.log('dot was clicked')
-            // //     console.log(chartElement[0]._index)
-            // //     }
-            // // },
-
-            // tooltips : {
-            //     enabled : false,
-            //     custom : tooltipModel => {
-
-                
-
-            //     let customTooltip = this.$refs['custom_tooltip']
-
-            //     if(tooltipModel.opacity == 0){
-            //         customTooltip.opacity = 0
-            //         return;
-            //     }
-            //     customTooltip.title = tooltipModel.title[0]
-            //     let index = tooltipModel.dataPoints[0].index
-            //     customTooltip.averages = this.chart.data.datasets[0].data[index].details
-            //     customTooltip.average = this.chart.data.datasets[0].data[index].y
-
-
-
-            //     customTooltip.opacity = 1
-
-            //     let chartPosition = this.chart.canvas.getBoundingClientRect()
-            //     let tooltipPosition = customTooltip.$el.getBoundingClientRect()
-
-            //     //assigning top position of tooltip
-            //     customTooltip.top =  chartPosition.top + window.pageYOffset + tooltipModel.caretY + 'px'
-
-            //     //assigning left position of tooltip
-            //     let finalPosition = chartPosition.left + window.pageXOffset + tooltipModel.caretX
-            //     if(window.innerWidth < finalPosition + tooltipPosition.width ){
-            //         customTooltip.left = finalPosition - tooltipPosition.width - 10 + 'px'
-            //     }else{
-            //         customTooltip.left = finalPosition +'px'
-            //     }
-                
-
-            //     }
-        //     // }
-        //     // }
-        // })
     }
 }
 </script>

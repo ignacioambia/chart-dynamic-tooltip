@@ -54,12 +54,21 @@ import TreeItem from './TreeItem'
                 if(!this.tooltipsToKeepOpen.includes(index)){
                     console.log('Adding tooltip to those that we must keep open')
                     this.tooltipsToKeepOpen.push(index)
+                    let openTooltip = Object.assign({},this)
+                    openTooltip.opacity = 1
                 }else{
                     console.log('Tooltip already added to list')
                 }
 
                 console.log(this.tooltipsToKeepOpen)
 
+            },
+
+            isKeptOpen(index){
+                if(this.tooltipsToKeepOpen.includes(index)){
+                    return true
+                }
+                return false
             }
         },
 
