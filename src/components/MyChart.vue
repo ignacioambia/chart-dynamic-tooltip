@@ -14,7 +14,7 @@ export default {
 
     data(){
         return {
-            chart : {}
+            tooltipsToKeepOpen : []
         }
     },
 
@@ -30,6 +30,7 @@ export default {
     },
 
     methods : {
+
         labels(){
             return Object.keys(this.info)
         },
@@ -46,48 +47,42 @@ export default {
             }
 
             return values
+        },
+
+        initializeTooltip(){
+            let tooltip = Vue.extend(CustomTooltip)
+            this.tooltip = new tooltip()
+            this.tooltip.$mount()
+            this.tooltip.chart = this
+            this.$root.$el.appendChild(this.tooltip.$el)
+        },
+
+        tooltipIsKeptOpen(index){
+            if(this.tooltipsToKeepOpen.includes(index)){
+                return true
+            }
+            return false
+        },
+
+        keepTooltipOpen(index){
+                this.tooltip.forceKeepOpen = true
+                this.tooltip.index = index
+                if(!this.tooltipIsKeptOpen(index)){
+                    console.log('Adding tooltip to those that we must keep open')
+                    this.tooltipsToKeepOpen.push(index)
+                    console.log(this.tooltipsToKeepOpen)
+                }else{
+                    console.log('Tooltip already added to list')
+                }
+
+                this.initializeTooltip()
         }
 
     },
 
-    
-
-    // methods : {
-    //     labels(){
-    //         return Object.keys(this.info)
-    //     },
-
-    //     values(){
-    //         let values = []
-    //         for (const prop in this.info){
-    //             values.push(
-    //             {
-    //                 y : this.info[prop].filter(obj=>obj.item == 'Average')[0].average,
-    //                 details : this.info[prop].filter(obj=>obj.item != 'Average')
-    //             } 
-    //             )
-    //         }
-
-    //         return values
-    //     }
-    // },
-
     mounted(){
 
-
-        let tooltip = Vue.extend(CustomTooltip)
-
-        this.tooltip = new tooltip()
-
-        this.tooltip.$mount()
-
-        console.log(this.$root)
-
-
-        this.$root.$el.appendChild(this.tooltip.$el)
-        console.log(this.tooltip)
-
-
+        this.initializeTooltip()
 
         this.chart = new Chart(document.getElementById(this.chart_id),{
             type : 'line',
@@ -104,8 +99,7 @@ export default {
 
             onClick : (evt,chartElement) => {
                 if(chartElement.length > 0){
-
-                    this.tooltip.keepTooltipOpen(chartElement[0]._index)
+                    this.keepTooltipOpen(chartElement[0]._index)
 
                 }
             },
@@ -117,14 +111,14 @@ export default {
 
                 if(tooltipModel.opacity == 0 ){
                     this.tooltip.opacity = 0
-                    return;
+                    return
                 }
 
                 let index = tooltipModel.dataPoints[0].index
 
                 //as there is already an open tooltip showing this info, we shouldn't
                 //show another one with the same info
-                if( this.tooltip.isKeptOpen(index)){
+                if( this.tooltipIsKeptOpen(index)){
                     return
                 }
 

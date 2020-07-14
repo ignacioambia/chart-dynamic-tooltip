@@ -31,58 +31,6 @@ export default {
 
       tooltipsToKeepOpen : [],
 
-      // list : [
-      //   {
-      //     item : 'Jorge',
-      //     average : '12',
-      //     children : [
-      //       {
-      //         item : 'Alan',
-      //         average : '15',
-      //         children : []
-      //       },
-      //       {
-      //         item : 'Ariel',
-      //         average : '18',
-      //         children : [
-      //           { 
-      //             item : 'Susana',
-      //             average : '100',
-      //           },
-      //           { 
-      //             item : 'Antonio',
-      //             average : '95',
-      //           },
-      //         ]
-      //       }
-      //     ]
-      //   },
-      //   {
-      //     item : 'Viridiana',
-      //     average : '13',
-      //     children : [
-      //       {
-      //         item : 'Angelica',
-      //         average : '33'
-      //       },
-      //       {
-      //         item : 'Naomi',
-      //         average : '22',
-      //         children : [
-      //           { 
-      //             item : 'Fernanda',
-      //             average : '65',
-      //           },
-      //           { 
-      //             item : 'Sofia',
-      //             average : '48',
-      //           },
-      //         ]
-      //       }
-      //     ]
-      //   },
-      // ],
-
       customKey : '',
       keyCount : 0,
 
@@ -135,88 +83,13 @@ export default {
       this.list.push('platano')
     },
 
-    // updateChart(){
-    //   this.chart = new Chart(document.getElementById('chart'),{
-    //   type : 'line',
-    //   data : {
-    //     labels : this.labels,
-    //     datasets : [
-    //       {
-    //         label : 'product',
-    //          data  : this.values
-    //       }
-    //     ],
 
-    //     },
-
-
-
-
-    //     options :{
-
-    //       onClick : (evt,chartElement)=>{ 
-    //         console.log(chartElement[0]._index)
-    //       },
-
-    //       tooltips : {
-
-    //         enabled : false,
-    //         custom : (tooltipModel) => {
-
-
-
-    //           let customTooltip = this.$refs['custom_tooltip']
-
-    //           if(tooltipModel.opacity == 0){
-    //             customTooltip.opacity = 0
-    //             return;
-    //           }
-
-    //           console.log(tooltipModel.dataPoints[0].index)
-
-
-    //           customTooltip.title = tooltipModel.title[0]
-    //           let index = tooltipModel.dataPoints[0].index
-    //           customTooltip.averages = this.chart.data.datasets[0].data[index].details
-    //           customTooltip.average = this.chart.data.datasets[0].data[index].y
-
-
-
-    //           customTooltip.opacity = 1
-
-    //           let chartPosition = this.chart.canvas.getBoundingClientRect()
-    //           let tooltipPosition = customTooltip.$el.getBoundingClientRect()
-
-    //           //assigning top position of tooltip
-    //           customTooltip.top =  chartPosition.top + window.pageYOffset + tooltipModel.caretY + 'px'
-
-    //           //assigning left position of tooltip
-    //           let finalPosition = chartPosition.left + window.pageXOffset + tooltipModel.caretX
-    //           if(window.innerWidth < finalPosition + tooltipPosition.width ){
-    //             customTooltip.left = finalPosition - tooltipPosition.width - 10 + 'px'
-    //           }else{
-    //             customTooltip.left = finalPosition +'px'
-    //           }
-              
-
-    //         }
-    //       }
-    //     }
-
-    //   })
-    // },
-
-    action(){
-        this.prop = 'hola'
-    },
 
 
   },
 
   mounted(){
-    // this.updateChart()
 
-    // console.log(this.$refs['custom_tooltip'])
   }
   
 }

@@ -79,7 +79,7 @@
     font-weight: normal!important;
     align-items: center;
     cursor: context-menu;
-    margin : 5px;
+    margin : 5px 0px;
 }
 
 .bar.hoverable:hover{

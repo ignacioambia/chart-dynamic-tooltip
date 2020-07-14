@@ -1,17 +1,24 @@
 <template>
-    <div class="custom-tooltip"
+    <div
+    v-if="!destroyTooltip"
+    class="custom-tooltip  noselect"
     :style="{'top' : top, 'left' : left, 'opacity' :  opacity}">
         <div class="custom-tooltip-header">
-            {{title}}
+            <div>
+                {{title}}
+            </div>
+            
+            <div>
+                <div 
+                v-show="forceKeepOpen" 
+                @click="closeTooltip"
+                class="tooltip-cross">
+                    &#10005;
+                </div>
+            </div>
+           
         </div>
 
-        <div>
-            <slot></slot>
-        </div>
-
-        <!-- <div v-for="item in averages" :key="item.item">
-            <tooltip-bar :info="item" arrow>{{item.item}}</tooltip-bar>
-        </div> -->
         <tree-item v-for="item in averages" :key="item.item" :item="item">
 
         </tree-item>
@@ -25,6 +32,9 @@
 <script>
 import TooltipBar from './TooltipBar'
 import TreeItem from './TreeItem'
+import _ from 'lodash'
+
+_.remove()
 
     export default {
         name : 'custom-tooltip',
@@ -34,13 +44,15 @@ import TreeItem from './TreeItem'
 
         data(){
             return {
-                top : '0px',
-                left : '0px',
+                top : '',
+                left : '',
                 opacity : 0,
                 title : '',
                 averages : [],
                 average : 0,
-                tooltipsToKeepOpen : []
+                forceKeepOpen : false,
+                destroyTooltip : false,
+                
 
             }
         },
@@ -50,36 +62,23 @@ import TreeItem from './TreeItem'
         },
 
         methods : {
-            keepTooltipOpen(index){
-                if(!this.tooltipsToKeepOpen.includes(index)){
-                    console.log('Adding tooltip to those that we must keep open')
-                    this.tooltipsToKeepOpen.push(index)
-                    let openTooltip = Object.assign({},this)
-                    openTooltip.opacity = 1
-                }else{
-                    console.log('Tooltip already added to list')
-                }
-
-                console.log(this.tooltipsToKeepOpen)
-
+            closeTooltip(){
+                this.destroyTooltip = true
+                _.remove(this.chart.tooltipsToKeepOpen,num=>{
+                   return  num == this.index
+                })
             },
 
-            isKeptOpen(index){
-                if(this.tooltipsToKeepOpen.includes(index)){
-                    return true
-                }
-                return false
-            }
         },
 
         watch : {
             opacity(){
                 if(this.opacity != 0){
                     //bringing element to the front of the screen
-                    this.$el.style.zIndex = 1000
+                    this.$el.style.zIndex = 1
                 }else{
                     //sending element to the back of the screen
-                    this.$el.style.zIndex = -1000
+                    this.$el.style.zIndex = -1
                 }
             }
         },
@@ -87,6 +86,7 @@ import TreeItem from './TreeItem'
         mounted(){
             
               this.$el.addEventListener('mouseout',()=>{
+                if(!this.forceKeepOpen)
                   this.opacity = 0
               })
 
@@ -111,6 +111,8 @@ import TreeItem from './TreeItem'
     margin: 5px;
     transition : .2s;
     z-index: -1000;
+    padding : 5px;
+    padding-top: 10px;
 }
 
 .custom-tooltip-header{
@@ -118,7 +120,25 @@ import TreeItem from './TreeItem'
     font-size: 13px;
     font-weight: bold;
     margin-bottom: 12px;
+    display : flex;
+    justify-content: space-between;
 
 }
+
+.tooltip-cross{
+    margin-top: -.3rem;
+    cursor: pointer;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
 
 </style>
