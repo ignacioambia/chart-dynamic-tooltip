@@ -1,29 +1,24 @@
 <template>
 <div>
-    <my-chart ref="first-tooltip" name="first-chart" :info="info" ></my-chart>
+    <my-chart ref="first-tooltip" name="first-chart" :info="info" >
+
+    </my-chart>
+    <draggable></draggable>
+    <draggable></draggable>
+    <draggable></draggable>
+    
 </div>
 </template>
 
 <script>
 
 import MyChart from './components/MyChart'
-
-// import Chart from 'chart.js'
-// import CustomTooltip from './components/CustomTooltip.vue'
-// import Vue from 'vue'
-
-
-
-// var tooltip_class = Vue.extend(CustomTooltip)
-// var inst = new tooltip_class()
-
-
-// console.log(inst)
+import Draggable from './components/Draggable'
 
 export default {
   name : 'app',
   components : {
-    MyChart
+    MyChart, Draggable
   },
 
   data(){
