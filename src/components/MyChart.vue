@@ -65,6 +65,7 @@ export default {
         },
 
         keepTooltipOpen(index){
+                this.tooltip.$el.style.transition = 0 + 's'
                 this.tooltip.forceKeepOpen = true
                 this.tooltip.index = index
                 if(!this.tooltipIsKeptOpen(index)){
@@ -135,10 +136,10 @@ export default {
                 let tooltipPosition = this.tooltip.$el.getBoundingClientRect()
 
                 //assigning top position of tooltip
-                this.tooltip.top =  chartPosition.top + window.pageYOffset + tooltipModel.caretY + 'px'
+                this.tooltip.top =  (chartPosition.top + window.pageYOffset + tooltipModel.caretY + 5) + 'px'
 
                 //assigning left position of tooltip
-                let finalPosition = chartPosition.left + window.pageXOffset + tooltipModel.caretX
+                let finalPosition = (chartPosition.left + window.pageXOffset + tooltipModel.caretX + 5)
                 if(window.innerWidth < finalPosition + tooltipPosition.width ){
                     this.tooltip.left = finalPosition - tooltipPosition.width - 10 + 'px'
                 }else{

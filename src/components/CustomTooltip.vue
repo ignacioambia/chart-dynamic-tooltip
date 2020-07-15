@@ -149,9 +149,9 @@ _.remove()
     font-style: normal;
     border-radius: 5px;
     padding: 5px;
-    margin: 5px;
-    /* transition : .2s; */
-    z-index: 9;
+    /* margin: 5px; */
+    transition : .3s;
+    z-index: -100;
     padding : 5px;
     padding-top: 10px;
 }
